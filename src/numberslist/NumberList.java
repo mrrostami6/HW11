@@ -10,6 +10,7 @@ public class NumberList {
         Scanner scan = new Scanner(System.in);
         System.out.println("Please Enter Number : ");
         int number = scan.nextInt();
+
         AtomicInteger oddStart = new AtomicInteger(1);
         AtomicInteger evenStart = new AtomicInteger(0);
 
@@ -18,7 +19,7 @@ public class NumberList {
         Thread even = new Thread(() -> {
             synchronized (numbers) {
                 while (true) {
-                    if (numbers.size() == number || numbers.size() == number + 1) return;
+                    if (numbers.size() == number + 1 ) return;
                     numbers.add(evenStart.getAndAdd(2));
                     try {
                         numbers.wait();
@@ -32,7 +33,7 @@ public class NumberList {
 
         Thread odd = new Thread(() -> {
             while (true) {
-                if (numbers.size() == number || numbers.size() == number + 1) return;
+                if (numbers.size() == number + 1) return;
                 synchronized (numbers) {
                     numbers.add(oddStart.getAndAdd(2));
                     numbers.notifyAll();
